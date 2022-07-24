@@ -29,7 +29,8 @@ class TeamTest(@Autowired private val mvc: MockMvc) {
                     """
                     [
                         {
-                            "name": "test"
+                            "id": 1,
+                            "name": "default"
                         }
                     ]
                     """.trimIndent()

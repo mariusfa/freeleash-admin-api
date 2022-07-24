@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/team")
-class TeamController {
+class TeamController(private val timeService: TeamService) {
 
     @GetMapping
-    fun listTeams(): List<TeamDTO> = listOf(TeamDTO("test"))
+    fun listTeams(): List<TeamDTO> = timeService.findTeams().map { TeamDTO(id = it.id!!,name = it.name) }
 
     @PostMapping
     fun createTeam() = "TODO"
