@@ -18,8 +18,10 @@ class HealtCheckTest(
 
     @Test
     fun `should test health check endpoint`() {
-        mvc.perform(get("/health")
-            .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(
+            get("/health")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isOk)
             .andExpect(content().string("healthy"))
     }
