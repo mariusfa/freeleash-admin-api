@@ -25,9 +25,13 @@ class TeamTest(@Autowired private val mvc: MockMvc) {
         )
             .andExpect(status().isOk)
             .andExpect(
-                content().string(
+                content().json(
                     """
-                    TODO
+                    [
+                        {
+                            "name": "test"
+                        }
+                    ]
                     """.trimIndent()
                 )
             )

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class TeamController {
 
     @GetMapping
-    fun listTeams() = "TODO"
+    fun listTeams(): List<TeamDTO> = listOf(TeamDTO("test"))
 
     @PostMapping
     fun createTeam() = "TODO"
