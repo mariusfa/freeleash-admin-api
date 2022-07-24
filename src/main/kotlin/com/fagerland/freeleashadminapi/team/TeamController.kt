@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/team")
-class TeamController {
-
-    @GetMapping
-    fun listTeams() = "TODO"
-
-    @PostMapping
-    fun createTeam() = "TODO"
-
-    @PutMapping
-    fun updateTeam() = "TODO"
-
-    @DeleteMapping
-    fun deleteTeam() = "TODO"
-}
+// @RestController("/team")
+// class TeamController {
+//
+//     @GetMapping
+//     fun listTeams() = "TODO"
+//
+//     @PostMapping
+//     fun createTeam() = "TODO"
+//
+//     @PutMapping
+//     fun updateTeam() = "TODO"
+//
+//     @DeleteMapping
+//     fun deleteTeam() = "TODO"
+// }
