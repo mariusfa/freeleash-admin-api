@@ -3,6 +3,7 @@ package com.fagerland.freeleashadminapi.team
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,7 +23,7 @@ class TeamController(private val timeService: TeamService) {
     fun createTeam(@RequestBody createTeamDTO: CreateTeamDTO) = timeService.createTeam(createTeamDTO.name)
 
     @PutMapping("/{id}")
-    fun updateTeam() = "TODO"
+    fun updateTeam(@RequestBody bodyTeamDTO: CreateTeamDTO, @PathVariable id: Long) = timeService.updateTeam(id, bodyTeamDTO.name)
 
     @DeleteMapping
     fun deleteTeam() = "TODO"

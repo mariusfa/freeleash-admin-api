@@ -9,5 +9,5 @@ class Team(
     @Id
     @GeneratedValue
     val id: Long? = null,
-    val name: String
+    var name: String
 )
