@@ -1,5 +1,6 @@
 package com.fagerland.freeleashadminapi
 
+import com.fagerland.freeleashadminapi.team.TeamRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TeamTest(@Autowired private val mvc: MockMvc) {
+class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private val teamRepository: TeamRepository) {
 
     @Test
     fun `should test list teams`() {
@@ -42,16 +43,19 @@ class TeamTest(@Autowired private val mvc: MockMvc) {
     fun `should test create team`() {
         mvc.perform(
             post("/team")
+                .content(
+                    """
+                    {
+                        "name": "test-team"
+                    }
+                """.trimIndent()
+                )
                 .contentType(MediaType.APPLICATION_JSON)
         )
-            .andExpect(status().isOk)
-            .andExpect(
-                content().string(
-                    """
-                    TODO
-                    """.trimIndent()
-                )
-            )
+            .andExpect(status().isCreated)
+
+        val teams = teamRepository.findAll()
+        assert(teams.any { it.name == "test-team" })
     }
 
     @Test

@@ -7,4 +7,6 @@ class TeamService(
     private val teamRepository: TeamRepository
 ) {
     fun findTeams(): MutableIterable<Team> = teamRepository.findAll()
+
+    fun createTeam(name: String) = teamRepository.save(Team(name = name))
 }
