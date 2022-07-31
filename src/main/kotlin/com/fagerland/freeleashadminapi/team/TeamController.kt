@@ -20,10 +20,10 @@ class TeamController(private val timeService: TeamService) {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun createTeam(@RequestBody createTeamDTO: CreateTeamDTO) = timeService.createTeam(createTeamDTO.name)
+    fun createTeam(@RequestBody teamRequestDTO: TeamRequestDTO) = timeService.createTeam(teamRequestDTO.name)
 
     @PutMapping("/{id}")
-    fun updateTeam(@RequestBody bodyTeamDTO: CreateTeamDTO, @PathVariable id: Long) = timeService.updateTeam(id, bodyTeamDTO.name)
+    fun updateTeam(@RequestBody teamRequestDTO: TeamRequestDTO, @PathVariable id: Long) = timeService.updateTeam(id, teamRequestDTO.name)
 
     @DeleteMapping
     fun deleteTeam() = "TODO"

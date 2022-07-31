@@ -1,3 +1,3 @@
 package com.fagerland.freeleashadminapi.team
 
-data class CreateTeamDTO(val name: String)
+data class TeamRequestDTO(val name: String)

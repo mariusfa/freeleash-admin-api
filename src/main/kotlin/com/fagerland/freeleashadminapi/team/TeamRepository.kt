@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi.team
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface TeamRepository : CrudRepository<Team, Long> {
+interface TeamRepository : JpaRepository<Team, Long> {
 
 }
