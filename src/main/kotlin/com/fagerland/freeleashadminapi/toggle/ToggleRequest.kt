@@ -1,7 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle
 
-data class ToggleDTO(
-    val id: Long,
+data class ToggleRequest(
     val name: String,
-    val isToggled: Boolean,
+    val teamId: Long
 )
