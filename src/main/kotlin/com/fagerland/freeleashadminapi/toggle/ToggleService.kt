@@ -33,7 +33,7 @@ class ToggleService(
         return toggleRepository.findAllByTeamName(teamName)
     }
 
-    fun updateToggle(updateToggleRequest: UpdateToggleRequest) {
+    fun updateToggle(updateToggleRequest: UpdateToggleRequest): Toggle {
         val toggle = toggleRepository.findById(updateToggleRequest.id).orElseThrow {
             ResponseStatusException(
                 HttpStatus.NOT_FOUND,
@@ -42,6 +42,6 @@ class ToggleService(
         }
         toggle.name = updateToggleRequest.name
         toggle.isToggled = updateToggleRequest.isToggled
-        toggleRepository.save(toggle)
+        return toggleRepository.save(toggle)
     }
 }

@@ -27,6 +27,8 @@ class ToggleController(
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO) =
-        toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
+    fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO {
+        val toggle = toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
+        return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
+    }
 }
