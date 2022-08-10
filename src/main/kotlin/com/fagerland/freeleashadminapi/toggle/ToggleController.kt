@@ -31,4 +31,10 @@ class ToggleController(
         val toggle = toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
         return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
     }
+
+    @GetMapping("/{id}")
+    fun getToggle(@PathVariable id: Long): ToggleDTO {
+        val toggle =  toggleService.getToggle(id)
+        return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
+    }
 }

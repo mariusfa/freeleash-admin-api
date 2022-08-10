@@ -44,4 +44,11 @@ class ToggleService(
         toggle.isToggled = updateToggleRequest.isToggled
         return toggleRepository.save(toggle)
     }
+
+    fun getToggle(id: Long): Toggle = toggleRepository.findById(id).orElseThrow {
+        ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Toggle with id $id not found"
+        )
+    }
 }
