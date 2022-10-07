@@ -1,6 +1,7 @@
 package com.fagerland.freeleashadminapi.toggle
 
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,4 +38,8 @@ class ToggleController(
         val toggle =  toggleService.getToggle(id)
         return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    fun deleteToggle(@PathVariable id: Long) = toggleService.deleteToggle(id)
 }

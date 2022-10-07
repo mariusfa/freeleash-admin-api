@@ -51,4 +51,12 @@ class ToggleService(
             "Toggle with id $id not found"
         )
     }
+
+    fun deleteToggle(id: Long) {
+        if (!toggleRepository.existsById(id)) throw ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Toggle not found with id $id"
+        )
+        toggleRepository.deleteById(id)
+    }
 }
