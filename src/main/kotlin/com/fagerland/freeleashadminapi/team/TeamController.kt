@@ -13,18 +13,19 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/team")
-class TeamController(private val timeService: TeamService) {
+class TeamController(private val teamService: TeamService) {
 
     @GetMapping
-    fun listTeams(): List<TeamDTO> = timeService.findTeams().map { TeamDTO(id = it.id!!, name = it.name) }
+    fun listTeams(): List<TeamDTO> = teamService.findTeams().map { TeamDTO(id = it.id!!, name = it.name) }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun createTeam(@RequestBody teamRequestDTO: TeamRequestDTO) = timeService.createTeam(teamRequestDTO.name)
+    fun createTeam(@RequestBody teamRequestDTO: TeamRequestDTO) = teamService.createTeam(teamRequestDTO.name)
 
     @PutMapping("/{id}")
-    fun updateTeam(@RequestBody teamRequestDTO: TeamRequestDTO, @PathVariable id: Long) = timeService.updateTeam(id, teamRequestDTO.name)
+    fun updateTeam(@RequestBody teamRequestDTO: TeamRequestDTO, @PathVariable id: Long) = teamService.updateTeam(id, teamRequestDTO.name)
 
-    @DeleteMapping
-    fun deleteTeam() = "TODO"
+    @DeleteMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    fun deleteTeam(@PathVariable id: Long) = teamService.deleteTeam(id)
 }

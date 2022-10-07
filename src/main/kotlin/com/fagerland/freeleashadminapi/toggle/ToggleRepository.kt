@@ -6,4 +6,6 @@ interface ToggleRepository: JpaRepository<Toggle, Long> {
     fun existsByNameAndTeamId(name: String, teamId: Long): Boolean
 
     fun findAllByTeamName(name: String): List<Toggle>
+
+    fun deleteAllByTeamId(id: Long)
 }
