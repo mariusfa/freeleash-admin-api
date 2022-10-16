@@ -21,7 +21,7 @@ class ToggleService(
             throw ResponseStatusException(HttpStatus.CONFLICT, "Toggle with name: ${toggleRequest.name} already exists")
         }
 
-        val newToggle = Toggle(name = toggleRequest.name, team = team, isToggled = false)
+        val newToggle = Toggle(name = toggleRequest.name, team = team, isToggled = toggleRequest.isToggled)
         toggleRepository.save(newToggle)
     }
 
