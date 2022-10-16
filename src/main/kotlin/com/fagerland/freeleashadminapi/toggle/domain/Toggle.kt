@@ -26,7 +26,8 @@ class Toggle(
             id = this.id!!,
             name = this.name,
             isToggled = this.isToggled,
-            toggleOperator = this.toggleOperator.toDTO()
+            toggleOperator = this.toggleOperator.toDTO(),
+            toggleConstraints = this.toggleConstraints.map { it.toDTO() }
         )
 }
 
