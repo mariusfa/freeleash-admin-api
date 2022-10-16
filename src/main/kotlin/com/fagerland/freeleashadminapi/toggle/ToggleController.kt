@@ -1,5 +1,8 @@
 package com.fagerland.freeleashadminapi.toggle
 
+import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
+import com.fagerland.freeleashadminapi.toggle.dto.ToggleRequestDTO
+import com.fagerland.freeleashadminapi.toggle.dto.UpdateToggleRequestDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +22,7 @@ class ToggleController(
 ) {
     @GetMapping
     fun getTogglesForTeam(@RequestParam team: String): List<ToggleDTO> =
-        toggleService.listTogglesForTeam(team).map { ToggleDTO(id = it.id!!, name = it.name, isToggled = it.isToggled) }
+        toggleService.listTogglesForTeam(team).map { it.toDTO() }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -30,13 +33,13 @@ class ToggleController(
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO {
         val toggle = toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
-        return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
+        return toggle.toDTO()
     }
 
     @GetMapping("/{id}")
     fun getToggle(@PathVariable id: Long): ToggleDTO {
         val toggle =  toggleService.getToggle(id)
-        return ToggleDTO(id = toggle.id!!, name = toggle.name, isToggled = toggle.isToggled)
+        return toggle.toDTO()
     }
 
     @DeleteMapping("/{id}")

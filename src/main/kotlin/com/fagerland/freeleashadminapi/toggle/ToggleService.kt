@@ -1,6 +1,9 @@
 package com.fagerland.freeleashadminapi.toggle
 
 import com.fagerland.freeleashadminapi.team.TeamRepository
+import com.fagerland.freeleashadminapi.toggle.domain.Toggle
+import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest
+import com.fagerland.freeleashadminapi.toggle.domain.UpdateToggleRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -21,7 +24,7 @@ class ToggleService(
             throw ResponseStatusException(HttpStatus.CONFLICT, "Toggle with name: ${toggleRequest.name} already exists")
         }
 
-        val newToggle = Toggle(name = toggleRequest.name, team = team, isToggled = toggleRequest.isToggled)
+        val newToggle = Toggle(name = toggleRequest.name, team = team, isToggled = toggleRequest.isToggled, toggleOperator = toggleRequest.toggleOperator)
         toggleRepository.save(newToggle)
     }
 
@@ -42,6 +45,7 @@ class ToggleService(
         }
         toggle.name = updateToggleRequest.name
         toggle.isToggled = updateToggleRequest.isToggled
+        toggle.toggleOperator = updateToggleRequest.toggleOperator
         return toggleRepository.save(toggle)
     }
 

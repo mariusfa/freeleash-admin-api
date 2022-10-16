@@ -1,5 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle
 
+import com.fagerland.freeleashadminapi.toggle.domain.Toggle
 import org.springframework.data.jpa.repository.JpaRepository
 import javax.transaction.Transactional
 
