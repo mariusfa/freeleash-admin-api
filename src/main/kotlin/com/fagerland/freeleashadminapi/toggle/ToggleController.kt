@@ -38,7 +38,7 @@ class ToggleController(
 
     @GetMapping("/{id}")
     fun getToggle(@PathVariable id: Long): ToggleDTO {
-        val toggle =  toggleService.getToggle(id)
+        val toggle = toggleService.getToggle(id)
         return toggle.toDTO()
     }
 

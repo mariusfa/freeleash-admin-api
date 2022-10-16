@@ -2,6 +2,7 @@ package com.fagerland.freeleashadminapi.toggle.domain
 
 import com.fagerland.freeleashadminapi.team.Team
 import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -16,7 +17,9 @@ class Toggle(
     @ManyToOne
     var team: Team,
     var isToggled: Boolean,
-    var toggleOperator: ToggleOperator
+    var toggleOperator: ToggleOperator,
+    @ElementCollection
+    var toggleConstraints: List<ToggleConstraint> = emptyList()
 ) {
     fun toDTO(): ToggleDTO =
         ToggleDTO(

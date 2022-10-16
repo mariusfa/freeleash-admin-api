@@ -23,7 +23,8 @@ class TeamController(private val teamService: TeamService) {
     fun createTeam(@RequestBody teamRequestDTO: TeamRequestDTO) = teamService.createTeam(teamRequestDTO.name)
 
     @PutMapping("/{id}")
-    fun updateTeam(@RequestBody teamRequestDTO: TeamRequestDTO, @PathVariable id: Long) = teamService.updateTeam(id, teamRequestDTO.name)
+    fun updateTeam(@RequestBody teamRequestDTO: TeamRequestDTO, @PathVariable id: Long) =
+        teamService.updateTeam(id, teamRequestDTO.name)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

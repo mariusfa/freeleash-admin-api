@@ -15,13 +15,17 @@ class TeamService(
     fun createTeam(name: String) = teamRepository.save(Team(name = name))
 
     fun updateTeam(id: Long, name: String) {
-        val existingTeam: Team = teamRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found") }
+        val existingTeam: Team = teamRepository.findById(id)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found") }
         existingTeam.name = name
         teamRepository.save(existingTeam)
     }
 
     fun deleteTeam(id: Long) {
-        if (!teamRepository.existsById(id)) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found")
+        if (!teamRepository.existsById(id)) throw ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Team with id: $id not found"
+        )
         toggleRepository.deleteAllByTeamId(id)
         teamRepository.deleteById(id)
     }

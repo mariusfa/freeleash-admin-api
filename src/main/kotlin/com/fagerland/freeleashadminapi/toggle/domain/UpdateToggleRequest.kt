@@ -4,5 +4,6 @@ data class UpdateToggleRequest(
     val id: Long,
     val name: String,
     val isToggled: Boolean,
-    val toggleOperator: ToggleOperator
+    val toggleOperator: ToggleOperator,
+    val toggleConstraints: List<ToggleConstraint>
 )

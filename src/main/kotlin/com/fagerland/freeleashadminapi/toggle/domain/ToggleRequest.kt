@@ -4,5 +4,6 @@ data class ToggleRequest(
     val name: String,
     val teamId: Long,
     val isToggled: Boolean,
-    val toggleOperator: ToggleOperator
+    val toggleOperator: ToggleOperator,
+    val toggleConstraints: List<ToggleConstraint>
 )
