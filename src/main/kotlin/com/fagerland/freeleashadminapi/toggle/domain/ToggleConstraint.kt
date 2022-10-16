@@ -1,10 +1,15 @@
 package com.fagerland.freeleashadminapi.toggle.domain
 
 import com.fagerland.freeleashadminapi.toggle.dto.ToggleConstraintDTO
-import javax.persistence.Embeddable
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-@Embeddable
+@Entity
 class ToggleConstraint(
+    @Id
+    @GeneratedValue
+    var id: Long? = null,
     var field: String
 ) {
     fun toDTO(): ToggleConstraintDTO = ToggleConstraintDTO(field = this.field)

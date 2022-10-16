@@ -1,5 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle.dto
 
+import com.fagerland.freeleashadminapi.toggle.domain.ToggleConstraint
 import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest
 
 data class ToggleRequestDTO(
@@ -14,6 +15,6 @@ data class ToggleRequestDTO(
         teamId = teamId,
         isToggled = isToggled,
         toggleOperator = toggleOperator.toDomain(),
-        toggleConstraints = toggleConstraints.map { it.toDomain() }
+        toggleConstraints = toggleConstraints.map { it.toDomain() } as MutableList<ToggleConstraint>
     )
 }
