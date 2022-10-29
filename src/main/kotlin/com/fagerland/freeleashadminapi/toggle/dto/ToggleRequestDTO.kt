@@ -1,20 +1,19 @@
 package com.fagerland.freeleashadminapi.toggle.dto
 
-import com.fagerland.freeleashadminapi.toggle.domain.ToggleConstraint
 import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest
 
 data class ToggleRequestDTO(
     val name: String,
     val teamId: Long,
     val isToggled: Boolean,
-    val toggleOperator: ToggleOperatorDTO,
-    val toggleConstraints: List<ToggleConstraintDTO>
+    val operator: ToggleOperatorDTO,
+    val conditions: Set<ConditionDTO>
 ) {
     fun toDomain(): ToggleRequest = ToggleRequest(
         name = name,
         teamId = teamId,
         isToggled = isToggled,
-        toggleOperator = toggleOperator.toDomain(),
-        toggleConstraints = toggleConstraints.map { it.toDomain() } as MutableList<ToggleConstraint>
+        operator = operator.toDomain(),
+        conditions = conditions.map { it.toDomain() }.toSet()
     )
 }

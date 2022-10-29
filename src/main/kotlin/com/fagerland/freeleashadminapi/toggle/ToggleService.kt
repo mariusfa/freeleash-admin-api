@@ -1,8 +1,8 @@
 package com.fagerland.freeleashadminapi.toggle
 
 import com.fagerland.freeleashadminapi.team.TeamRepository
+import com.fagerland.freeleashadminapi.toggle.domain.Condition
 import com.fagerland.freeleashadminapi.toggle.domain.Toggle
-import com.fagerland.freeleashadminapi.toggle.domain.ToggleConstraint
 import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest
 import com.fagerland.freeleashadminapi.toggle.domain.UpdateToggleRequest
 import org.springframework.http.HttpStatus
@@ -29,8 +29,8 @@ class ToggleService(
             name = toggleRequest.name,
             team = team,
             isToggled = toggleRequest.isToggled,
-            toggleOperator = toggleRequest.toggleOperator,
-            toggleConstraints = toggleRequest.toggleConstraints as MutableList<ToggleConstraint>
+            operator = toggleRequest.operator,
+            conditions = if (toggleRequest.conditions.isEmpty()) mutableSetOf() else toggleRequest.conditions as MutableSet<Condition>
         )
         toggleRepository.save(newToggle)
     }
@@ -52,9 +52,9 @@ class ToggleService(
         }
         toggle.name = updateToggleRequest.name
         toggle.isToggled = updateToggleRequest.isToggled
-        toggle.toggleOperator = updateToggleRequest.toggleOperator
-        toggle.toggleConstraints.clear()
-        toggle.toggleConstraints.addAll(updateToggleRequest.toggleConstraints)
+        toggle.operator = updateToggleRequest.operator
+        toggle.conditions.clear()
+        toggle.conditions.addAll(updateToggleRequest.conditions)
         return toggleRepository.save(toggle)
     }
 

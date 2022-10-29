@@ -31,7 +31,7 @@ class FreeleashConfiguration {
                 name = "default",
                 team = team,
                 isToggled = false,
-                toggleOperator = ToggleOperator.AND
+                operator = ToggleOperator.AND
             )
         )
     }

@@ -19,18 +19,18 @@ class Toggle(
     @ManyToOne
     var team: Team,
     var isToggled: Boolean,
-    var toggleOperator: ToggleOperator,
+    var operator: ToggleOperator,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "toggle_id")
-    var toggleConstraints: MutableList<ToggleConstraint> = mutableListOf()
+    var conditions: MutableSet<Condition> = mutableSetOf()
 ) {
     fun toDTO(): ToggleDTO =
         ToggleDTO(
             id = this.id!!,
             name = this.name,
             isToggled = this.isToggled,
-            toggleOperator = this.toggleOperator.toDTO(),
-            toggleConstraints = this.toggleConstraints.map { it.toDTO() }
+            operator = this.operator.toDTO(),
+            conditions = this.conditions.map { it.toDTO() }.toSet()
         )
 }
 
