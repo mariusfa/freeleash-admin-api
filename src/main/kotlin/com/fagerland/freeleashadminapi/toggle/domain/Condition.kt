@@ -1,6 +1,8 @@
 package com.fagerland.freeleashadminapi.toggle.domain
 
 import com.fagerland.freeleashadminapi.toggle.dto.ConditionDTO
+import javax.persistence.CollectionTable
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -10,7 +12,10 @@ class Condition(
     @Id
     @GeneratedValue
     var id: Long? = null,
-    var field: String
+    var field: String,
+    @ElementCollection
+    @CollectionTable(name = "content")
+    var contents: Set<String>
 ) {
-    fun toDTO(): ConditionDTO = ConditionDTO(field = this.field)
+    fun toDTO(): ConditionDTO = ConditionDTO(field = this.field, contents = this.contents)
 }
