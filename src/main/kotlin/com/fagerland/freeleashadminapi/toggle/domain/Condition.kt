@@ -13,9 +13,11 @@ class Condition(
     @GeneratedValue
     var id: Long? = null,
     var field: String,
+    var operator: ConditionOperator,
     @ElementCollection
     @CollectionTable(name = "content")
     var contents: Set<String>
 ) {
-    fun toDTO(): ConditionDTO = ConditionDTO(field = this.field, contents = this.contents)
+    fun toDTO(): ConditionDTO =
+        ConditionDTO(field = this.field, contents = this.contents, operator = this.operator.toDTO())
 }
