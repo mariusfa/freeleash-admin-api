@@ -4,6 +4,7 @@ import com.fagerland.freeleashadminapi.team.Team
 import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
 import javax.persistence.CascadeType
 import javax.persistence.Entity
+import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -18,11 +19,12 @@ class Toggle(
     var id: Long? = null,
     var name: String,
     @ManyToOne
+    @JoinColumn(foreignKey = ForeignKey(name = "FK_team"))
     var team: Team,
     var isToggled: Boolean,
     var operator: ToggleOperator,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "toggle_id")
+    @JoinColumn(name = "toggle_id", foreignKey = ForeignKey(name = "FK_toggle"))
     var conditions: MutableSet<Condition> = mutableSetOf()
 ) {
     fun toDTO(): ToggleDTO =
