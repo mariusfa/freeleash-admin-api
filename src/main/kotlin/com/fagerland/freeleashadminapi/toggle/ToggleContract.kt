@@ -18,4 +18,10 @@ interface ToggleContract {
 
     @Operation(description = "Update values for toggle")
     fun updateToggle(id: Long, updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO
+
+    @Operation(description = "Get a toggle given id")
+    fun getToggle(id: Long): ToggleDTO
+
+    @Operation(description = "Delete a toggle given id")
+    fun deleteToggle(id: Long)
 }

@@ -37,12 +37,12 @@ class ToggleController(
     }
 
     @GetMapping("/{id}")
-    fun getToggle(@PathVariable id: Long): ToggleDTO {
+    override fun getToggle(@PathVariable id: Long): ToggleDTO {
         val toggle = toggleService.getToggle(id)
         return toggle.toDTO()
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    fun deleteToggle(@PathVariable id: Long) = toggleService.deleteToggle(id)
+    override fun deleteToggle(@PathVariable id: Long) = toggleService.deleteToggle(id)
 }
