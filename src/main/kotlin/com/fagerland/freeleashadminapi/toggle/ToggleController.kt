@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/toggle")
 class ToggleController(
     private val toggleService: ToggleService
-) {
+) : ToggleContract {
     @GetMapping
-    fun getTogglesForTeam(@RequestParam team: String): List<ToggleDTO> =
+    override fun getTogglesForTeam(@RequestParam team: String): List<ToggleDTO> =
         toggleService.listTogglesForTeam(team).map { it.toDTO() }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun createToggle(@RequestBody toggleRequestDTO: ToggleRequestDTO) =
+    override fun createToggle(@RequestBody toggleRequestDTO: ToggleRequestDTO) =
         toggleService.createToggle(toggleRequestDTO.toDomain())
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO {
+    override fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO {
         val toggle = toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
         return toggle.toDTO()
     }

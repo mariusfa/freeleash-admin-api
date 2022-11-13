@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/team")
-class TeamController(private val teamService: TeamService) {
+class TeamController(private val teamService: TeamService) : TeamContract {
 
     @GetMapping
     fun listTeams(): List<TeamDTO> = teamService.findTeams().map { TeamDTO(id = it.id!!, name = it.name) }
