@@ -31,7 +31,10 @@ class ToggleController(
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    override fun updateToggle(@PathVariable id: Long, @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO): ToggleDTO {
+    override fun updateToggle(
+        @PathVariable id: Long,
+        @RequestBody updateToggleRequestDTO: UpdateToggleRequestDTO
+    ): ToggleDTO {
         val toggle = toggleService.updateToggle(updateToggleRequestDTO.toDomain(id))
         return toggle.toDTO()
     }

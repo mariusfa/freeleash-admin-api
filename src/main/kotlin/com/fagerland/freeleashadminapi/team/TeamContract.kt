@@ -1,8 +1,6 @@
 package com.fagerland.freeleashadminapi.team
 
 import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
 
 interface TeamContract {
 
