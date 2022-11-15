@@ -1,11 +1,5 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.Team
-import com.fagerland.freeleashadminapi.team.TeamRepository
-import com.fagerland.freeleashadminapi.toggle.ToggleRepository
-import com.fagerland.freeleashadminapi.toggle.domain.Toggle
-import com.fagerland.freeleashadminapi.toggle.domain.ToggleOperator
-import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
@@ -22,19 +16,6 @@ fun main(args: Array<String>) {
 
 @Configuration
 class FreeleashConfiguration {
-
-    @Bean
-    fun databaseInitializer(teamRepository: TeamRepository, toggleRepository: ToggleRepository) = ApplicationRunner {
-        val team = teamRepository.save(Team(name = "default"))
-        toggleRepository.save(
-            Toggle(
-                name = "default",
-                team = team,
-                isToggled = false,
-                operator = ToggleOperator.AND
-            )
-        )
-    }
 
     @Bean
     fun addCorsConfig(): WebMvcConfigurer {
