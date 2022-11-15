@@ -50,6 +50,17 @@ class ToggleService(
                 "Toggle with id ${updateToggleRequest.id} not found"
             )
         }
+        if (toggleRepository.existsByNameAndTeamId(
+                updateToggleRequest.name,
+                toggle.team.id!!
+            ) && updateToggleRequest.name != toggle.name
+        ) {
+            throw ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Toggle with name: ${updateToggleRequest.name} already exists"
+            )
+        }
+
         toggle.name = updateToggleRequest.name
         toggle.isToggled = updateToggleRequest.isToggled
         toggle.operator = updateToggleRequest.operator

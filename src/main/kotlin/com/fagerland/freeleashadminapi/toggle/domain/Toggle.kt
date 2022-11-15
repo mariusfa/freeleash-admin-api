@@ -22,7 +22,7 @@ class Toggle(
     @JoinColumn(foreignKey = ForeignKey(name = "FK_team"))
     var team: Team,
     var isToggled: Boolean,
-    var operator: ToggleOperator,
+    var operator: ToggleOperator = ToggleOperator.AND,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "toggle_id", foreignKey = ForeignKey(name = "FK_toggle"))
     var conditions: MutableSet<Condition> = mutableSetOf()
