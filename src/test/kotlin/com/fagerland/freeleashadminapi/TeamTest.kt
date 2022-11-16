@@ -7,7 +7,6 @@ import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,6 +46,27 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
 
         val teams = teamRepository.findAll()
         assertTrue(teams.any { it.name == "test-team" })
+    }
+
+    @Test
+    @Transactional
+    fun `should test create team name conflict`() {
+        teamRepository.saveAndFlush(Team(name = "test-team"))
+        mvc.perform(
+            post("/team")
+                .content(
+                    """
+                    {
+                        "name": "test-team"
+                    }
+                """.trimIndent()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isConflict)
+
+        val teams = teamRepository.findAll()
+        assertEquals(1, teams.size)
     }
 
     @Test

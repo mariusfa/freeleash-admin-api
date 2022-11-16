@@ -12,7 +12,13 @@ class TeamService(
 ) {
     fun findTeams(): MutableIterable<Team> = teamRepository.findAll()
 
-    fun createTeam(name: String) = teamRepository.save(Team(name = name))
+    fun createTeam(name: String) {
+        if (teamRepository.existsByName(name)) throw ResponseStatusException(
+            HttpStatus.CONFLICT,
+            "Team with name already exists"
+        )
+        teamRepository.save(Team(name = name))
+    }
 
     fun updateTeam(id: Long, name: String) {
         val existingTeam: Team = teamRepository.findById(id)
