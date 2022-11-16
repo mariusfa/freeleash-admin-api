@@ -15,12 +15,16 @@ class TeamService(
     fun createTeam(name: String) {
         if (teamRepository.existsByName(name)) throw ResponseStatusException(
             HttpStatus.CONFLICT,
-            "Team with name already exists"
+            "Team with name: $name already exists"
         )
         teamRepository.save(Team(name = name))
     }
 
     fun updateTeam(id: Long, name: String) {
+        if (teamRepository.existsByName(name)) throw ResponseStatusException(
+            HttpStatus.CONFLICT,
+            "Team with name: $name already exists"
+        )
         val existingTeam: Team = teamRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found") }
         existingTeam.name = name

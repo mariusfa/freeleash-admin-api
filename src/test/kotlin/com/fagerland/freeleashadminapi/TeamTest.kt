@@ -106,6 +106,28 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
         assertEquals("test-team1", teamFound.name)
     }
 
+    @Test
+    @Transactional
+    fun `should test update team name conflict`() {
+        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        teamRepository.saveAndFlush(Team(name = "test-team1"))
+        mvc.perform(
+            put("/team/${team.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                        {
+                            "name": "test-team1"
+                        }
+                    """.trimIndent()
+                )
+        )
+            .andExpect(status().isConflict)
+
+        val teamFound = teamRepository.findById(team.id!!).get()
+        assertEquals(team.name, teamFound.name)
+    }
+
 
     @Test
     @Transactional
