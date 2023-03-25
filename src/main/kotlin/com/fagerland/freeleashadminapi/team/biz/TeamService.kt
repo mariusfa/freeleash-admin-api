@@ -1,5 +1,7 @@
-package com.fagerland.freeleashadminapi.team
+package com.fagerland.freeleashadminapi.team.biz
 
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.ToggleRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

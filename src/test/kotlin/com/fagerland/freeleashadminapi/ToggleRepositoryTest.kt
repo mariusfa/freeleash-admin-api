@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.TeamEntity
-import com.fagerland.freeleashadminapi.team.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.ToggleRepository
 import com.fagerland.freeleashadminapi.toggle.domain.Condition
 import com.fagerland.freeleashadminapi.toggle.domain.ConditionOperator

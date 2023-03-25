@@ -1,5 +1,6 @@
-package com.fagerland.freeleashadminapi.team
+package com.fagerland.freeleashadminapi.team.rest
 
+import com.fagerland.freeleashadminapi.team.biz.TeamService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

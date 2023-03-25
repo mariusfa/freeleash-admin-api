@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle
 
-import com.fagerland.freeleashadminapi.team.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.domain.Condition
 import com.fagerland.freeleashadminapi.toggle.domain.Toggle
 import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest

@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle.domain
 
-import com.fagerland.freeleashadminapi.team.TeamEntity
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
 import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
 import javax.persistence.CascadeType
 import javax.persistence.Entity

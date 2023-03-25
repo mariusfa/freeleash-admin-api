@@ -1,4 +1,4 @@
-package com.fagerland.freeleashadminapi.team
+package com.fagerland.freeleashadminapi.team.biz.repository.jpa
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

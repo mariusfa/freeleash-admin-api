@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.TeamEntity
-import com.fagerland.freeleashadminapi.team.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
 import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Assertions.assertEquals

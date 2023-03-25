@@ -1,4 +1,4 @@
-package com.fagerland.freeleashadminapi.team
+package com.fagerland.freeleashadminapi.team.biz.repository.jpa
 
 import org.springframework.data.jpa.repository.JpaRepository
 
