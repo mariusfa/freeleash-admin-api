@@ -24,5 +24,5 @@ CREATE TABLE toggle (
 );
 
 ALTER TABLE condition ADD CONSTRAINT FK_toggle FOREIGN KEY (toggle_id) REFERENCES toggle;
-ALTER TABLE CONTENT ADD CONSTRAINT FK_condition FOREIGN KEY (condition_id) REFERENCES condition;
+ALTER TABLE content ADD CONSTRAINT FK_condition FOREIGN KEY (condition_id) REFERENCES condition;
 ALTER TABLE toggle ADD CONSTRAINT FK_team FOREIGN KEY (team_id) REFERENCES team;
