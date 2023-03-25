@@ -1,7 +1,28 @@
-create table condition (id  bigserial not null, field varchar(255), operator int4, toggle_id int8, primary key (id));
-create table content (condition_id int8 not null, contents varchar(255));
-create table team (id  bigserial not null, name varchar(255), primary key (id));
-create table toggle (id  bigserial not null, is_toggled boolean not null, name varchar(255), operator int4, team_id int8, primary key (id));
-alter table condition add constraint FK_toggle foreign key (toggle_id) references toggle;
-alter table content add constraint FK_condition foreign key (condition_id) references condition;
-alter table toggle add constraint FK_team foreign key (team_id) references team;
+CREATE TABLE condition (
+    id BIGSERIAL NOT NULL,
+    field VARCHAR(255),
+    operator INT4,
+    toggle_id INT8,
+    PRIMARY KEY (id)
+);
+CREATE TABLE content (
+    condition_id INT8 NOT NULL,
+    contents VARCHAR(255)
+);
+CREATE TABLE team (
+    id BIGSERIAL NOT NULL,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+CREATE TABLE toggle (
+    id BIGSERIAL NOT NULL,
+    is_toggled BOOLEAN NOT NULL,
+    name VARCHAR(255),
+    operator INT4,
+    team_id INT8,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE condition ADD CONSTRAINT FK_toggle FOREIGN KEY (toggle_id) REFERENCES toggle;
+ALTER TABLE CONTENT ADD CONSTRAINT FK_condition FOREIGN KEY (condition_id) REFERENCES condition;
+ALTER TABLE toggle ADD CONSTRAINT FK_team FOREIGN KEY (team_id) REFERENCES team;
