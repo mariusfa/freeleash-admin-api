@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.Team
+import com.fagerland.freeleashadminapi.team.TeamEntity
 import com.fagerland.freeleashadminapi.team.TeamRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @DataJpaTest
 @ActiveProfiles("test")
 @Testcontainers
-class TeamRepositoryTest {
+class TeamEntityRepositoryTest {
 
     @Autowired
     private lateinit var teamRepository: TeamRepository
@@ -29,7 +29,7 @@ class TeamRepositoryTest {
 
     @Test
     fun `should be able to create team`() {
-        teamRepository.save(Team(name = "testing"))
+        teamRepository.save(TeamEntity(name = "testing"))
         val listOfTeams = jdbcTemplate.queryForList("select * from team")
         assertThat(listOfTeams).hasSize(1)
         val teamFound = listOfTeams[0]

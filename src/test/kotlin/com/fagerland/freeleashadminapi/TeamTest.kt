@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.Team
+import com.fagerland.freeleashadminapi.team.TeamEntity
 import com.fagerland.freeleashadminapi.team.TeamRepository
 import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.`is`
@@ -55,7 +55,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
     @Test
     @Transactional
     fun `should test create team name conflict`() {
-        teamRepository.saveAndFlush(Team(name = "test-team"))
+        teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             post("/team")
                 .content(
@@ -76,7 +76,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
     @Test
     @Transactional
     fun `should test list teams`() {
-        teamRepository.saveAndFlush(Team(name = "test-team"))
+        teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             get("/team")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,9 +90,9 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
     @Test
     @Transactional
     fun `should test update team`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
-            put("/team/${team.id}")
+            put("/team/${teamEntity.id}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     """
@@ -106,17 +106,17 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
             .andExpect(
                 content().string("")
             )
-        val teamFound = teamRepository.findById(team.id!!).get()
+        val teamFound = teamRepository.findById(teamEntity.id!!).get()
         assertEquals("test-team1", teamFound.name)
     }
 
     @Test
     @Transactional
     fun `should test update team name conflict`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
-        teamRepository.saveAndFlush(Team(name = "test-team1"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        teamRepository.saveAndFlush(TeamEntity(name = "test-team1"))
         mvc.perform(
-            put("/team/${team.id}")
+            put("/team/${teamEntity.id}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     """
@@ -128,23 +128,23 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
         )
             .andExpect(status().isConflict)
 
-        val teamFound = teamRepository.findById(team.id!!).get()
-        assertEquals(team.name, teamFound.name)
+        val teamFound = teamRepository.findById(teamEntity.id!!).get()
+        assertEquals(teamEntity.name, teamFound.name)
     }
 
 
     @Test
     @Transactional
     fun `should test delete team`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
-            delete("/team/${team.id}")
+            delete("/team/${teamEntity.id}")
         )
             .andExpect(status().isNoContent)
             .andExpect(
                 content().string("")
             )
-        val teamFound = teamRepository.findById(team.id!!)
+        val teamFound = teamRepository.findById(teamEntity.id!!)
         assertFalse(teamFound.isPresent)
     }
 }

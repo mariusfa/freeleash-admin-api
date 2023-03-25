@@ -10,26 +10,26 @@ class TeamService(
     private val teamRepository: TeamRepository,
     private val toggleRepository: ToggleRepository
 ) {
-    fun findTeams(): MutableIterable<Team> = teamRepository.findAll()
+    fun findTeams(): MutableIterable<TeamEntity> = teamRepository.findAll()
 
     fun createTeam(name: String) {
         if (teamRepository.existsByName(name)) throw ResponseStatusException(
             HttpStatus.CONFLICT,
             "Team with name: $name already exists"
         )
-        teamRepository.save(Team(name = name))
+        teamRepository.save(TeamEntity(name = name))
     }
 
     fun updateTeam(id: Long, name: String) {
-        val existingTeam: Team = teamRepository.findById(id)
+        val existingTeamEntity: TeamEntity = teamRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found") }
-        if (teamRepository.existsByName(name) && existingTeam.name != name) throw ResponseStatusException(
+        if (teamRepository.existsByName(name) && existingTeamEntity.name != name) throw ResponseStatusException(
             HttpStatus.CONFLICT,
             "Team with name: $name already exists"
         )
 
-        existingTeam.name = name
-        teamRepository.save(existingTeam)
+        existingTeamEntity.name = name
+        teamRepository.save(existingTeamEntity)
     }
 
     fun deleteTeam(id: Long) {

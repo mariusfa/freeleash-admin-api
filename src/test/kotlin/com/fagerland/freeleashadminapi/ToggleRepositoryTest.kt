@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.Team
+import com.fagerland.freeleashadminapi.team.TeamEntity
 import com.fagerland.freeleashadminapi.team.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.ToggleRepository
 import com.fagerland.freeleashadminapi.toggle.domain.Condition
@@ -37,8 +37,8 @@ class ToggleRepositoryTest {
 
     @Test
     fun `should create toggle`() {
-        val savedTeam = teamRepository.save(Team(name = "testing"))
-        toggleRepository.save(Toggle(name = "test-toggle", team = savedTeam, isToggled = false))
+        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
+        toggleRepository.save(Toggle(name = "test-toggle", team = savedTeamEntity, isToggled = false))
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
         assertThat(listOfToggles).hasSize(1)
         val toggle = listOfToggles[0]
@@ -47,8 +47,8 @@ class ToggleRepositoryTest {
 
     @Test
     fun `should save toggle and it's conditions`() {
-        val savedTeam = teamRepository.save(Team(name = "testing"))
-        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeam, isToggled = false, conditions = mutableSetOf(
+        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
+        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             Condition(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
         )))
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
@@ -68,8 +68,8 @@ class ToggleRepositoryTest {
 
     @Test
     fun `should delete toggle and it's conditions`() {
-        val savedTeam = teamRepository.save(Team(name = "testing"))
-        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeam, isToggled = false, conditions = mutableSetOf(
+        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
+        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             Condition(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
         )))
         toggleRepository.deleteById(savedToggle.id!!)
@@ -87,8 +87,8 @@ class ToggleRepositoryTest {
 
     @Test
     fun `should only some of content for condition`() {
-        val savedTeam = teamRepository.save(Team(name = "testing"))
-        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeam, isToggled = false, conditions = mutableSetOf(
+        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
+        val savedToggle = toggleRepository.saveAndFlush(Toggle(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             Condition(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
         )))
 

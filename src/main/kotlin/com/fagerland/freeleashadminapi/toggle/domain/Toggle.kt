@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi.toggle.domain
 
-import com.fagerland.freeleashadminapi.team.Team
+import com.fagerland.freeleashadminapi.team.TeamEntity
 import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
 import javax.persistence.CascadeType
 import javax.persistence.Entity
@@ -20,7 +20,7 @@ class Toggle(
     var name: String,
     @ManyToOne
     @JoinColumn(foreignKey = ForeignKey(name = "FK_team"))
-    var team: Team,
+    var team: TeamEntity,
     var isToggled: Boolean,
     var operator: ToggleOperator = ToggleOperator.AND,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)

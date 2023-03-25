@@ -1,6 +1,6 @@
 package com.fagerland.freeleashadminapi
 
-import com.fagerland.freeleashadminapi.team.Team
+import com.fagerland.freeleashadminapi.team.TeamEntity
 import com.fagerland.freeleashadminapi.team.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.ToggleRepository
 import com.fagerland.freeleashadminapi.toggle.domain.Toggle
@@ -35,14 +35,14 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test create toggle`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             MockMvcRequestBuilders.post("/toggle")
                 .content(
                     """
                     {
                         "name": "test-toggle",
-                        "teamId": ${team.id},
+                        "teamId": ${teamEntity.id},
                         "operator": "AND",
                         "isToggled": true,
                         "conditions": [
@@ -61,17 +61,17 @@ internal class ToggleTest(
         val toggles = toggleRepository.findAll()
         assertEquals(1, toggles.size)
         assertEquals("test-toggle", toggles[0].name)
-        assertEquals(team.id, toggles[0].team.id)
+        assertEquals(teamEntity.id, toggles[0].team.id)
         assertEquals(true, toggles[0].isToggled)
     }
 
     @Test
     @Transactional
     fun `should test create toggle name conflict`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
@@ -80,7 +80,7 @@ internal class ToggleTest(
                     """
                     {
                         "name": "test-toggle",
-                        "teamId": ${team.id},
+                        "teamId": ${teamEntity.id},
                         "operator": "AND",
                         "isToggled": true,
                         "conditions": []
@@ -97,10 +97,10 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test update toggle`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         val toggleToUpdate = toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
@@ -109,7 +109,7 @@ internal class ToggleTest(
                     """
                     {
                         "name": "test-toggle",
-                        "teamId": ${team.id},
+                        "teamId": ${teamEntity.id},
                         "operator": "AND",
                         "isToggled": false,
                         "conditions": []
@@ -127,15 +127,15 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test update toggle to name which already exists`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         val toggleToUpdate = toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         val toggleToConflictWith = toggleRepository.saveAndFlush(Toggle(
             name = "conflict-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
@@ -144,7 +144,7 @@ internal class ToggleTest(
                     """
                     {
                         "name": "conflict-toggle",
-                        "teamId": ${team.id},
+                        "teamId": ${teamEntity.id},
                         "operator": "AND",
                         "isToggled": false,
                         "conditions": []
@@ -162,10 +162,10 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test toggle delete`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         val toggleToDelete = toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
@@ -183,14 +183,14 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test list toggle for team`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         val toggle = toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
-            MockMvcRequestBuilders.get("/toggle").queryParam("team", team.name)
+            MockMvcRequestBuilders.get("/toggle").queryParam("team", teamEntity.name)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Int>(1)))
@@ -200,10 +200,10 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test get toggle given id`() {
-        val team = teamRepository.saveAndFlush(Team(name = "test-team"))
+        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
         val toggle = toggleRepository.saveAndFlush(Toggle(
             name = "test-toggle",
-            team = team,
+            team = teamEntity,
             isToggled = true,
         ))
         mvc.perform(
