@@ -4,7 +4,7 @@ import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionEntity
-import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionOperator
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionOperatorEntity
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -50,7 +50,7 @@ class ToggleEntityRepositoryTest {
         val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
         val savedToggleEntity = toggleRepository.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
-            ConditionEntity(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
+            ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
         )
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
@@ -73,7 +73,7 @@ class ToggleEntityRepositoryTest {
         val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
         val savedToggleEntity = toggleRepository.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
-            ConditionEntity(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
+            ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
         )
         toggleRepository.deleteById(savedToggleEntity.id!!)
@@ -94,12 +94,12 @@ class ToggleEntityRepositoryTest {
         val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
         val savedToggleEntity = toggleRepository.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
-            ConditionEntity(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1", "2"))
+            ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
         )
 
         savedToggleEntity.conditions.clear()
-        savedToggleEntity.conditions.add(ConditionEntity(field = "test-condition", operator = ConditionOperator.IN, contents = setOf("1")))
+        savedToggleEntity.conditions.add(ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1")))
         toggleRepository.saveAndFlush(savedToggleEntity)
 
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")

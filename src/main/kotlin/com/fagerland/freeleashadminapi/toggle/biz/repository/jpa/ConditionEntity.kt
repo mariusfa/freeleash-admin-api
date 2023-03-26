@@ -8,14 +8,16 @@ import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.Table
 
-@Entity
+@Entity(name = "Condition")
+@Table(name = "condition")
 class ConditionEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var field: String,
-    var operator: ConditionOperator,
+    var operator: ConditionOperatorEntity,
     @ElementCollection()
     @CollectionTable(name = "content", foreignKey = ForeignKey(name = "FK_condition"))
     var contents: Set<String>
