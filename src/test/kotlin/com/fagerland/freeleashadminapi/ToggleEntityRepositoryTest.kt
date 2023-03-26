@@ -1,8 +1,8 @@
 package com.fagerland.freeleashadminapi
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
-import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepositoryJpa
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionEntity
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionOperatorEntity
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleEntity
@@ -20,25 +20,25 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class ToggleEntityRepositoryTest {
 
     @Autowired
-    private lateinit var teamRepository: TeamRepository
+    private lateinit var teamRepositoryJpa: TeamRepositoryJpa
 
     @Autowired
-    private lateinit var toggleRepository: ToggleRepository
+    private lateinit var toggleRepositoryJpa: ToggleRepositoryJpa
 
     @Autowired
     private lateinit var jdbcTemplate: JdbcTemplate
 
     @Test
     fun `should inject components`() {
-        assertThat(teamRepository).isNotNull
-        assertThat(toggleRepository).isNotNull
+        assertThat(teamRepositoryJpa).isNotNull
+        assertThat(toggleRepositoryJpa).isNotNull
         assertThat(jdbcTemplate).isNotNull
     }
 
     @Test
     fun `should create toggle`() {
-        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
-        toggleRepository.save(ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false))
+        val savedTeamEntity = teamRepositoryJpa.save(TeamEntity(name = "testing"))
+        toggleRepositoryJpa.save(ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false))
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
         assertThat(listOfToggles).hasSize(1)
         val toggle = listOfToggles[0]
@@ -47,8 +47,8 @@ class ToggleEntityRepositoryTest {
 
     @Test
     fun `should save toggle and it's conditions`() {
-        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
-        val savedToggleEntity = toggleRepository.saveAndFlush(
+        val savedTeamEntity = teamRepositoryJpa.save(TeamEntity(name = "testing"))
+        val savedToggleEntity = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
@@ -65,19 +65,19 @@ class ToggleEntityRepositoryTest {
         assertThat(listOfContents[0]["contents"]).isEqualTo("1")
         assertThat(listOfContents[1]["contents"]).isEqualTo("2")
 
-        toggleRepository.deleteById(savedToggleEntity.id!!)
+        toggleRepositoryJpa.deleteById(savedToggleEntity.id!!)
     }
 
     @Test
     fun `should delete toggle and it's conditions`() {
-        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
-        val savedToggleEntity = toggleRepository.saveAndFlush(
+        val savedTeamEntity = teamRepositoryJpa.save(TeamEntity(name = "testing"))
+        val savedToggleEntity = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
         )
-        toggleRepository.deleteById(savedToggleEntity.id!!)
-        toggleRepository.flush()
+        toggleRepositoryJpa.deleteById(savedToggleEntity.id!!)
+        toggleRepositoryJpa.flush()
 
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
         assertThat(listOfToggles).hasSize(0)
@@ -91,8 +91,8 @@ class ToggleEntityRepositoryTest {
 
     @Test
     fun `should only some of content for condition`() {
-        val savedTeamEntity = teamRepository.save(TeamEntity(name = "testing"))
-        val savedToggleEntity = toggleRepository.saveAndFlush(
+        val savedTeamEntity = teamRepositoryJpa.save(TeamEntity(name = "testing"))
+        val savedToggleEntity = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(name = "test-toggle", team = savedTeamEntity, isToggled = false, conditions = mutableSetOf(
             ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1", "2"))
         ))
@@ -100,7 +100,7 @@ class ToggleEntityRepositoryTest {
 
         savedToggleEntity.conditions.clear()
         savedToggleEntity.conditions.add(ConditionEntity(field = "test-condition", operator = ConditionOperatorEntity.IN, contents = setOf("1")))
-        toggleRepository.saveAndFlush(savedToggleEntity)
+        toggleRepositoryJpa.saveAndFlush(savedToggleEntity)
 
         val listOfToggles = jdbcTemplate.queryForList("select * from toggle")
         assertThat(listOfToggles).hasSize(1)

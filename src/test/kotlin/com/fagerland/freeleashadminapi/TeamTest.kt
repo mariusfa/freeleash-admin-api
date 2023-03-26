@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
 import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -30,7 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private val teamRepository: TeamRepository) {
+internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private val teamRepositoryJpa: TeamRepositoryJpa) {
 
     @Test
     @Transactional
@@ -48,14 +48,14 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
         )
             .andExpect(status().isCreated)
 
-        val teams = teamRepository.findAll()
+        val teams = teamRepositoryJpa.findAll()
         assertTrue(teams.any { it.name == "test-team" })
     }
 
     @Test
     @Transactional
     fun `should test create team name conflict`() {
-        teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             post("/team")
                 .content(
@@ -69,14 +69,14 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
         )
             .andExpect(status().isConflict)
 
-        val teams = teamRepository.findAll()
+        val teams = teamRepositoryJpa.findAll()
         assertEquals(1, teams.size)
     }
 
     @Test
     @Transactional
     fun `should test list teams`() {
-        teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             get("/team")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +90,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
     @Test
     @Transactional
     fun `should test update team`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             put("/team/${teamEntity.id}")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,15 +106,15 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
             .andExpect(
                 content().string("")
             )
-        val teamFound = teamRepository.findById(teamEntity.id!!).get()
+        val teamFound = teamRepositoryJpa.findById(teamEntity.id!!).get()
         assertEquals("test-team1", teamFound.name)
     }
 
     @Test
     @Transactional
     fun `should test update team name conflict`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        teamRepository.saveAndFlush(TeamEntity(name = "test-team1"))
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team1"))
         mvc.perform(
             put("/team/${teamEntity.id}")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,7 +128,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
         )
             .andExpect(status().isConflict)
 
-        val teamFound = teamRepository.findById(teamEntity.id!!).get()
+        val teamFound = teamRepositoryJpa.findById(teamEntity.id!!).get()
         assertEquals(teamEntity.name, teamFound.name)
     }
 
@@ -136,7 +136,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
     @Test
     @Transactional
     fun `should test delete team`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             delete("/team/${teamEntity.id}")
         )
@@ -144,7 +144,7 @@ internal class TeamTest(@Autowired private val mvc: MockMvc, @Autowired private 
             .andExpect(
                 content().string("")
             )
-        val teamFound = teamRepository.findById(teamEntity.id!!)
+        val teamFound = teamRepositoryJpa.findById(teamEntity.id!!)
         assertFalse(teamFound.isPresent)
     }
 }

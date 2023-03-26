@@ -1,8 +1,8 @@
 package com.fagerland.freeleashadminapi
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
-import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepositoryJpa
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleEntity
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,14 +28,14 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ToggleTest(
     @Autowired private val mvc: MockMvc,
-    @Autowired private val teamRepository: TeamRepository,
-    @Autowired private val toggleRepository: ToggleRepository
+    @Autowired private val teamRepositoryJpa: TeamRepositoryJpa,
+    @Autowired private val toggleRepositoryJpa: ToggleRepositoryJpa
 ) {
 
     @Test
     @Transactional
     fun `should test create toggle`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
         mvc.perform(
             MockMvcRequestBuilders.post("/toggle")
                 .content(
@@ -58,7 +58,7 @@ internal class ToggleTest(
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.status().isCreated)
-        val toggles = toggleRepository.findAll()
+        val toggles = toggleRepositoryJpa.findAll()
         assertEquals(1, toggles.size)
         assertEquals("test-toggle", toggles[0].name)
         assertEquals(teamEntity.id, toggles[0].team.id)
@@ -68,8 +68,8 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test create toggle name conflict`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,
@@ -92,15 +92,15 @@ internal class ToggleTest(
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.status().isConflict)
-        val togglesFound = toggleRepository.findAll()
+        val togglesFound = toggleRepositoryJpa.findAll()
         assertEquals(1, togglesFound.size)
     }
 
     @Test
     @Transactional
     fun `should test update toggle`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        val toggleEntityToUpdate = toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        val toggleEntityToUpdate = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,
@@ -124,22 +124,22 @@ internal class ToggleTest(
         )
             .andExpect(MockMvcResultMatchers.status().isNoContent)
 
-        val toggleFound = toggleRepository.findById(toggleEntityToUpdate.id!!).get()
+        val toggleFound = toggleRepositoryJpa.findById(toggleEntityToUpdate.id!!).get()
         assertFalse(toggleFound.isToggled)
     }
 
     @Test
     @Transactional
     fun `should test update toggle to name which already exists`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        val toggleEntityToUpdate = toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        val toggleEntityToUpdate = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,
             isToggled = true,
         )
         )
-        val toggleEntityToConflictWith = toggleRepository.saveAndFlush(
+        val toggleEntityToConflictWith = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "conflict-toggle",
             team = teamEntity,
@@ -163,15 +163,15 @@ internal class ToggleTest(
         )
             .andExpect(MockMvcResultMatchers.status().isConflict)
 
-        val toggleFound = toggleRepository.findById(toggleEntityToUpdate.id!!).get()
+        val toggleFound = toggleRepositoryJpa.findById(toggleEntityToUpdate.id!!).get()
         assertNotEquals(toggleEntityToConflictWith.name, toggleFound.name)
     }
 
     @Test
     @Transactional
     fun `should test toggle delete`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        val toggleEntityToDelete = toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        val toggleEntityToDelete = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,
@@ -186,15 +186,15 @@ internal class ToggleTest(
                 MockMvcResultMatchers.content().string("")
             )
 
-        val toggleFound = toggleRepository.findById(toggleEntityToDelete.id!!)
+        val toggleFound = toggleRepositoryJpa.findById(toggleEntityToDelete.id!!)
         assertFalse(toggleFound.isPresent)
     }
 
     @Test
     @Transactional
     fun `should test list toggle for team`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        val toggleEntity = toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        val toggleEntity = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,
@@ -212,8 +212,8 @@ internal class ToggleTest(
     @Test
     @Transactional
     fun `should test get toggle given id`() {
-        val teamEntity = teamRepository.saveAndFlush(TeamEntity(name = "test-team"))
-        val toggleEntity = toggleRepository.saveAndFlush(
+        val teamEntity = teamRepositoryJpa.saveAndFlush(TeamEntity(name = "test-team"))
+        val toggleEntity = toggleRepositoryJpa.saveAndFlush(
             ToggleEntity(
             name = "test-toggle",
             team = teamEntity,

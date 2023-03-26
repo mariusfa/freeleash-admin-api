@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,20 +16,20 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class TeamEntityRepositoryTest {
 
     @Autowired
-    private lateinit var teamRepository: TeamRepository
+    private lateinit var teamRepositoryJpa: TeamRepositoryJpa
 
     @Autowired
     private lateinit var jdbcTemplate: JdbcTemplate
 
     @Test
     fun `should inject components`() {
-        assertThat(teamRepository).isNotNull
+        assertThat(teamRepositoryJpa).isNotNull
         assertThat(jdbcTemplate).isNotNull
     }
 
     @Test
     fun `should be able to create team`() {
-        teamRepository.save(TeamEntity(name = "testing"))
+        teamRepositoryJpa.save(TeamEntity(name = "testing"))
         val listOfTeams = jdbcTemplate.queryForList("select * from team")
         assertThat(listOfTeams).hasSize(1)
         val teamFound = listOfTeams[0]

@@ -1,3 +1,7 @@
 package com.fagerland.freeleashadminapi.team.rest.dto
 
-data class TeamRequestDTO(val name: String)
+import com.fagerland.freeleashadminapi.team.biz.domain.TeamRequest
+
+data class TeamRequestDTO(val name: String) {
+    fun toDomain(): TeamRequest = TeamRequest(name = name)
+}

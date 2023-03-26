@@ -1,9 +1,9 @@
 package com.fagerland.freeleashadminapi.toggle.biz
 
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionEntity
 import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleEntity
-import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepositoryJpa
 import com.fagerland.freeleashadminapi.toggle.biz.domain.ToggleRequest
 import com.fagerland.freeleashadminapi.toggle.biz.domain.UpdateToggleRequest
 import org.springframework.http.HttpStatus
@@ -12,17 +12,17 @@ import org.springframework.web.server.ResponseStatusException
 
 @Service
 class ToggleService(
-    private val toggleRepository: ToggleRepository,
-    private val teamRepository: TeamRepository
+    private val toggleRepositoryJpa: ToggleRepositoryJpa,
+    private val teamRepositoryJpa: TeamRepositoryJpa
 ) {
     fun createToggle(toggleRequest: ToggleRequest) {
-        val team = teamRepository.findById(toggleRequest.teamId).orElseThrow {
+        val team = teamRepositoryJpa.findById(toggleRequest.teamId).orElseThrow {
             ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Team not found for id: ${toggleRequest.teamId}"
             )
         }
-        if (toggleRepository.existsByNameAndTeamId(toggleRequest.name, toggleRequest.teamId)) {
+        if (toggleRepositoryJpa.existsByNameAndTeamId(toggleRequest.name, toggleRequest.teamId)) {
             throw ResponseStatusException(HttpStatus.CONFLICT, "Toggle with name: ${toggleRequest.name} already exists")
         }
 
@@ -33,25 +33,25 @@ class ToggleService(
             operator = toggleRequest.operator,
             conditions = if (toggleRequest.conditions.isEmpty()) mutableSetOf() else toggleRequest.conditions as MutableSet<ConditionEntity>
         )
-        toggleRepository.save(newToggleEntity)
+        toggleRepositoryJpa.save(newToggleEntity)
     }
 
     fun listTogglesForTeam(teamName: String): List<ToggleEntity> {
-        if (!teamRepository.existsByName(teamName)) throw ResponseStatusException(
+        if (!teamRepositoryJpa.existsByName(teamName)) throw ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Team not found with name $teamName"
         )
-        return toggleRepository.findAllByTeamName(teamName)
+        return toggleRepositoryJpa.findAllByTeamName(teamName)
     }
 
     fun updateToggle(updateToggleRequest: UpdateToggleRequest): ToggleEntity {
-        val toggle = toggleRepository.findById(updateToggleRequest.id).orElseThrow {
+        val toggle = toggleRepositoryJpa.findById(updateToggleRequest.id).orElseThrow {
             ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Toggle with id ${updateToggleRequest.id} not found"
             )
         }
-        if (toggleRepository.existsByNameAndTeamId(
+        if (toggleRepositoryJpa.existsByNameAndTeamId(
                 updateToggleRequest.name,
                 toggle.team.id!!
             ) && updateToggleRequest.name != toggle.name
@@ -67,10 +67,10 @@ class ToggleService(
         toggle.operator = updateToggleRequest.operator
         toggle.conditions.clear()
         toggle.conditions.addAll(updateToggleRequest.conditions)
-        return toggleRepository.save(toggle)
+        return toggleRepositoryJpa.save(toggle)
     }
 
-    fun getToggle(id: Long): ToggleEntity = toggleRepository.findById(id).orElseThrow {
+    fun getToggle(id: Long): ToggleEntity = toggleRepositoryJpa.findById(id).orElseThrow {
         ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Toggle with id $id not found"
@@ -78,10 +78,10 @@ class ToggleService(
     }
 
     fun deleteToggle(id: Long) {
-        if (!toggleRepository.existsById(id)) throw ResponseStatusException(
+        if (!toggleRepositoryJpa.existsById(id)) throw ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Toggle not found with id $id"
         )
-        toggleRepository.deleteById(id)
+        toggleRepositoryJpa.deleteById(id)
     }
 }

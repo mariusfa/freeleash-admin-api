@@ -1,45 +1,45 @@
 package com.fagerland.freeleashadminapi.team.biz
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamEntity
-import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
-import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
+import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepositoryJpa
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepositoryJpa
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
 class TeamService(
-    private val teamRepository: TeamRepository,
-    private val toggleRepository: ToggleRepository
+    private val teamRepositoryJpa: TeamRepositoryJpa,
+    private val toggleRepositoryJpa: ToggleRepositoryJpa
 ) {
-    fun findTeams(): MutableIterable<TeamEntity> = teamRepository.findAll()
+    fun findTeams(): MutableIterable<TeamEntity> = teamRepositoryJpa.findAll()
 
     fun createTeam(name: String) {
-        if (teamRepository.existsByName(name)) throw ResponseStatusException(
+        if (teamRepositoryJpa.existsByName(name)) throw ResponseStatusException(
             HttpStatus.CONFLICT,
             "Team with name: $name already exists"
         )
-        teamRepository.save(TeamEntity(name = name))
+        teamRepositoryJpa.save(TeamEntity(name = name))
     }
 
     fun updateTeam(id: Long, name: String) {
-        val existingTeamEntity: TeamEntity = teamRepository.findById(id)
+        val existingTeamEntity: TeamEntity = teamRepositoryJpa.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id: $id not found") }
-        if (teamRepository.existsByName(name) && existingTeamEntity.name != name) throw ResponseStatusException(
+        if (teamRepositoryJpa.existsByName(name) && existingTeamEntity.name != name) throw ResponseStatusException(
             HttpStatus.CONFLICT,
             "Team with name: $name already exists"
         )
 
         existingTeamEntity.name = name
-        teamRepository.save(existingTeamEntity)
+        teamRepositoryJpa.save(existingTeamEntity)
     }
 
     fun deleteTeam(id: Long) {
-        if (!teamRepository.existsById(id)) throw ResponseStatusException(
+        if (!teamRepositoryJpa.existsById(id)) throw ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Team with id: $id not found"
         )
-        toggleRepository.deleteAllByTeamId(id)
-        teamRepository.deleteById(id)
+        toggleRepositoryJpa.deleteAllByTeamId(id)
+        teamRepositoryJpa.deleteById(id)
     }
 }
