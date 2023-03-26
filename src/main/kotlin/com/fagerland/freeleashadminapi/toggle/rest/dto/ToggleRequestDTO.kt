@@ -1,16 +1,17 @@
-package com.fagerland.freeleashadminapi.toggle.dto
+package com.fagerland.freeleashadminapi.toggle.rest.dto
 
-import com.fagerland.freeleashadminapi.toggle.domain.UpdateToggleRequest
+import com.fagerland.freeleashadminapi.toggle.biz.domain.ToggleRequest
 
-data class UpdateToggleRequestDTO(
+data class ToggleRequestDTO(
     val name: String,
+    val teamId: Long,
     val isToggled: Boolean,
     val operator: ToggleOperatorDTO,
     val conditions: Set<ConditionDTO>
 ) {
-    fun toDomain(id: Long): UpdateToggleRequest = UpdateToggleRequest(
-        id = id,
+    fun toDomain(): ToggleRequest = ToggleRequest(
         name = name,
+        teamId = teamId,
         isToggled = isToggled,
         operator = operator.toDomain(),
         conditions = conditions.map { it.toDomain() }.toSet()

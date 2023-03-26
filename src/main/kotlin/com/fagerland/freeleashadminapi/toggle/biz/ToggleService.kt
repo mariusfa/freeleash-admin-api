@@ -1,10 +1,11 @@
-package com.fagerland.freeleashadminapi.toggle
+package com.fagerland.freeleashadminapi.toggle.biz
 
 import com.fagerland.freeleashadminapi.team.biz.repository.jpa.TeamRepository
-import com.fagerland.freeleashadminapi.toggle.domain.Condition
-import com.fagerland.freeleashadminapi.toggle.domain.Toggle
-import com.fagerland.freeleashadminapi.toggle.domain.ToggleRequest
-import com.fagerland.freeleashadminapi.toggle.domain.UpdateToggleRequest
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ConditionEntity
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleEntity
+import com.fagerland.freeleashadminapi.toggle.biz.repository.jpa.ToggleRepository
+import com.fagerland.freeleashadminapi.toggle.biz.domain.ToggleRequest
+import com.fagerland.freeleashadminapi.toggle.biz.domain.UpdateToggleRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -25,17 +26,17 @@ class ToggleService(
             throw ResponseStatusException(HttpStatus.CONFLICT, "Toggle with name: ${toggleRequest.name} already exists")
         }
 
-        val newToggle = Toggle(
+        val newToggleEntity = ToggleEntity(
             name = toggleRequest.name,
             team = team,
             isToggled = toggleRequest.isToggled,
             operator = toggleRequest.operator,
-            conditions = if (toggleRequest.conditions.isEmpty()) mutableSetOf() else toggleRequest.conditions as MutableSet<Condition>
+            conditions = if (toggleRequest.conditions.isEmpty()) mutableSetOf() else toggleRequest.conditions as MutableSet<ConditionEntity>
         )
-        toggleRepository.save(newToggle)
+        toggleRepository.save(newToggleEntity)
     }
 
-    fun listTogglesForTeam(teamName: String): List<Toggle> {
+    fun listTogglesForTeam(teamName: String): List<ToggleEntity> {
         if (!teamRepository.existsByName(teamName)) throw ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Team not found with name $teamName"
@@ -43,7 +44,7 @@ class ToggleService(
         return toggleRepository.findAllByTeamName(teamName)
     }
 
-    fun updateToggle(updateToggleRequest: UpdateToggleRequest): Toggle {
+    fun updateToggle(updateToggleRequest: UpdateToggleRequest): ToggleEntity {
         val toggle = toggleRepository.findById(updateToggleRequest.id).orElseThrow {
             ResponseStatusException(
                 HttpStatus.NOT_FOUND,
@@ -69,7 +70,7 @@ class ToggleService(
         return toggleRepository.save(toggle)
     }
 
-    fun getToggle(id: Long): Toggle = toggleRepository.findById(id).orElseThrow {
+    fun getToggle(id: Long): ToggleEntity = toggleRepository.findById(id).orElseThrow {
         ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Toggle with id $id not found"

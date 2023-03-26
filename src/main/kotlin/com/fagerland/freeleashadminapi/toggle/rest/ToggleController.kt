@@ -1,8 +1,9 @@
-package com.fagerland.freeleashadminapi.toggle
+package com.fagerland.freeleashadminapi.toggle.rest
 
-import com.fagerland.freeleashadminapi.toggle.dto.ToggleDTO
-import com.fagerland.freeleashadminapi.toggle.dto.ToggleRequestDTO
-import com.fagerland.freeleashadminapi.toggle.dto.UpdateToggleRequestDTO
+import com.fagerland.freeleashadminapi.toggle.biz.ToggleService
+import com.fagerland.freeleashadminapi.toggle.rest.dto.ToggleDTO
+import com.fagerland.freeleashadminapi.toggle.rest.dto.ToggleRequestDTO
+import com.fagerland.freeleashadminapi.toggle.rest.dto.UpdateToggleRequestDTO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

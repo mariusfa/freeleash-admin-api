@@ -1,4 +1,4 @@
-package com.fagerland.freeleashadminapi.toggle.dto
+package com.fagerland.freeleashadminapi.toggle.rest.dto
 
 data class ToggleDTO(
     val id: Long,

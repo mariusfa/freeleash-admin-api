@@ -1,7 +1,7 @@
 package com.fagerland.freeleashadminapi.team.rest
 
-import com.fagerland.freeleashadminapi.team.rest.TeamDTO
-import com.fagerland.freeleashadminapi.team.rest.TeamRequestDTO
+import com.fagerland.freeleashadminapi.team.rest.dto.TeamDTO
+import com.fagerland.freeleashadminapi.team.rest.dto.TeamRequestDTO
 import io.swagger.v3.oas.annotations.Operation
 
 interface TeamContract {

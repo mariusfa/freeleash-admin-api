@@ -1,6 +1,6 @@
-package com.fagerland.freeleashadminapi.toggle.domain
+package com.fagerland.freeleashadminapi.toggle.biz.repository.jpa
 
-import com.fagerland.freeleashadminapi.toggle.dto.ConditionOperatorDTO
+import com.fagerland.freeleashadminapi.toggle.rest.dto.ConditionOperatorDTO
 
 enum class ConditionOperator {
     IN, LE;

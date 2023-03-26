@@ -1,6 +1,6 @@
-package com.fagerland.freeleashadminapi.toggle.domain
+package com.fagerland.freeleashadminapi.toggle.biz.repository.jpa
 
-import com.fagerland.freeleashadminapi.toggle.dto.ConditionDTO
+import com.fagerland.freeleashadminapi.toggle.rest.dto.ConditionDTO
 import javax.persistence.CollectionTable
 import javax.persistence.ElementCollection
 import javax.persistence.Entity
@@ -10,7 +10,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-class Condition(
+class ConditionEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
